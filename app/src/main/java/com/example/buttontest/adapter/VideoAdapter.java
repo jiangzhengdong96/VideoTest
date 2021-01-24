@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.buttontest.R;
 import com.example.buttontest.entity.VideoEntity;
 import com.example.buttontest.util.StringUtil;
+import com.example.buttontest.view.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,8 +22,8 @@ import java.util.List;
 public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<VideoEntity> mDatas;
     private Context mContext;
-    public VideoAdapter(List<VideoEntity> datas, Context context) {
-        mDatas = datas;
+
+    public VideoAdapter(Context context) {
         mContext = context;
     }
 
@@ -43,8 +44,13 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         myViewHolder.tvCollect.setText(String.valueOf(videoEntity.getCollectNum()));
         myViewHolder.tvComment.setText(String.valueOf(videoEntity.getCommentNum()));
         myViewHolder.tvDz.setText(String.valueOf(videoEntity.getLikeNum()));
-        Picasso.with(mContext).load(videoEntity.getHeadurl()).into(myViewHolder.iv_header);
-        Picasso.with(mContext).load(videoEntity.getCoverurl()).into(myViewHolder.iv_cover);
+        Picasso.with(mContext)
+                .load(videoEntity.getHeadurl())
+                .transform(new CircleTransform())
+                .into(myViewHolder.iv_header);
+        Picasso.with(mContext)
+                .load(videoEntity.getCoverurl())
+                .into(myViewHolder.iv_cover);
     }
 
     @Override
@@ -69,7 +75,9 @@ public class VideoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             iv_cover = (ImageView) itemView.findViewById(R.id.iv_cover);
             iv_header = (ImageView) itemView.findViewById(R.id.iv_header);
         }
+    }
 
-
+    public void setmDatas(List<VideoEntity> list){
+        mDatas = list;
     }
 }

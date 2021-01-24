@@ -92,12 +92,13 @@ public class Api {
         if (!mParams.isEmpty() && mParams.size() != 0){
             Iterator<Map.Entry<String,Object>> it = mParams.entrySet().iterator();
             while (it.hasNext()){
+                Map.Entry<String, Object> entry = it.next();
                 if (StringUtil.isEmpty(stringBuffer.toString())){
                     stringBuffer.append("?");
                 }else{
                     stringBuffer.append("&");
                 }
-                stringBuffer.append(it.next().getValue());
+                stringBuffer.append(entry.getKey()).append("=").append(entry.getValue());
             }
         }
         return baseUrl + stringBuffer.toString();

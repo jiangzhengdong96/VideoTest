@@ -23,7 +23,13 @@ import com.example.buttontest.entity.VideoListResponse;
 import com.example.buttontest.util.AppConfig;
 import com.example.buttontest.util.StringUtil;
 import com.google.gson.Gson;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,10 +37,10 @@ import java.util.List;
 public class VideoFragment extends BaseFragment {
 
     private RecyclerView recyclerView;
-
+    private int pageNum = 1;
     private VideoAdapter adapter;
-
-    private List<VideoEntity> datas = null;
+    private RefreshLayout refreshLayout;
+    private List<VideoEntity> allDatas = new ArrayList<>();
     public VideoFragment() {
         // Required empty public constructor
     }
@@ -58,6 +64,7 @@ public class VideoFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_video, container, false);
         recyclerView = (RecyclerView)v.findViewById(R.id.re_view);
+        refreshLayout = (RefreshLayout)v.findViewById(R.id.refreshLayout);
         return v;
     }
 
@@ -67,43 +74,81 @@ public class VideoFragment extends BaseFragment {
         LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
         linearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayout);
+        adapter = new VideoAdapter(getActivity());
+        recyclerView.setAdapter(adapter);
 
-        requestVideoList();
-
+        refreshLayout.setRefreshHeader(new ClassicsHeader(getActivity()));
+        refreshLayout.setRefreshFooter(new ClassicsFooter(getActivity()));
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                pageNum = 1;
+                requestVideoList(true);
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
+                pageNum ++;
+                requestVideoList(false);
+            }
+        });
+        requestVideoList(true);
     }
 
-    private void requestVideoList(){
-
+    private void requestVideoList(boolean type){
         String token = getStringFromSp("token");
         if (!StringUtil.isEmpty(token)){
             HashMap<String,Object> map = new HashMap<>();
             map.put("token",token);
+            map.put("page",pageNum);
+            map.put("limit",AppConfig.PAGE_SIZE);
             Api.config(AppConfig.VIDEO_LIST,map).getRequest(new TtitCallback() {
                 @Override
                 public void onSuccess(String res) {
+
+                    if (type){
+                        refreshLayout.finishRefresh(true);
+                    }else{
+                        refreshLayout.finishLoadMore(true);
+                    }
                     VideoListResponse listResponses = new Gson().fromJson(res, VideoListResponse.class);
                     if (listResponses != null && listResponses.getCode() == 0){
-                        datas = listResponses.getPage().getList();
-                        adapter = new VideoAdapter(datas,getActivity());
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                recyclerView.setAdapter(adapter);
+                        List<VideoEntity> datas = listResponses.getPage().getList();
+                        if (datas != null && datas.size() > 0){
+                            if (type){
+                                allDatas = datas;
+                            }else{
+                                allDatas.addAll(datas);
                             }
-                        });
-
-
+                            adapter.setmDatas(allDatas);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            });
+                        }else{
+                            if (type){
+                                showToastSync("刷新失败");
+                            }else{
+                                showToastSync("无加载内容");
+                            }
+                        }
                     }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
+                    if (type) {
+                        refreshLayout.finishRefresh(true);
+                    } else {
+                        refreshLayout.finishLoadMore(true);
+                    }
                 }
             });
         }else {
             navigateTo(LoginActivity.class);
         }
     }
-
-
 }
