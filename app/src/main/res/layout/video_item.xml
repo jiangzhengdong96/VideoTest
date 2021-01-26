@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     android:layout_width="match_parent"
@@ -43,16 +44,26 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/iv_cover"
-        android:layout_width="match_parent"
-        android:layout_height="187dp"
+
+
+    <FrameLayout
+        android:id="@+id/player_container"
         android:layout_marginTop="6dp"
         android:layout_marginLeft="21dp"
         android:layout_marginRight="27dp"
-        android:src="@mipmap/default_bg"
-        android:scaleType="fitXY"/>
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:scaleType="fitXY"
+        android:background="@android:color/black"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <com.dueeeke.videocontroller.component.PrepareView
+            android:id="@+id/prepare_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="39dp">

@@ -21,7 +21,7 @@ import com.flyco.tablayout.SlidingTabLayout;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
     private Context mContext;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private final String[] mTitles = {
@@ -53,19 +53,20 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-        vp = (FixedViewPager)v.findViewById(R.id.slide_vp);
-        tabLayout = (SlidingTabLayout)v.findViewById(R.id.tl_7);
-        return v;
+    protected int initLayout() {
+        return R.layout.fragment_home;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void initView() {
+        vp = (FixedViewPager)mRootView.findViewById(R.id.slide_vp);
+        tabLayout = (SlidingTabLayout)mRootView.findViewById(R.id.tl_7);
+    }
+
+    @Override
+    protected void initData() {
         for (String title : mTitles){
             mFragments.add(VideoFragment.newInstance(title));
         }
