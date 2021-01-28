@@ -6,4 +6,6 @@ public class AppConfig {
     public static String LOGIN = "/app/login";
     public static String REGISTER = "/app/register";
     public static String VIDEO_LIST = "/app/videolist/list";
+    public static String VIDEO_LIST_BY_CATEGORY = "/app/videolist/getListByCategoryId";
+    public static String VIDEO_CATEGORY_LIST = "/app/videocategory/list";
 }
