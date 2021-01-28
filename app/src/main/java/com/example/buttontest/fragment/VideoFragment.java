@@ -29,6 +29,7 @@ import com.example.buttontest.activity.LoginActivity;
 import com.example.buttontest.adapter.VideoAdapter;
 import com.example.buttontest.api.Api;
 import com.example.buttontest.api.TtitCallback;
+import com.example.buttontest.entity.CategoryEntity;
 import com.example.buttontest.entity.VideoEntity;
 import com.example.buttontest.entity.VideoListResponse;
 import com.example.buttontest.listener.OnItemChildClickListener;
@@ -50,6 +51,7 @@ import java.util.List;
 
 public class VideoFragment extends BaseFragment implements OnItemChildClickListener {
 
+    private int mCId;
     private RecyclerView recyclerView;
     private int pageNum = 1;
     private VideoAdapter adapter;
@@ -78,9 +80,9 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
 
 
     // TODO: Rename and change types and number of parameters
-    public static VideoFragment newInstance(String title) {
+    public static VideoFragment newInstance(int cId) {
         VideoFragment fragment = new VideoFragment();
-//        fragment.mTitle = title;
+        fragment.mCId = cId;
         return fragment;
     }
 
@@ -151,7 +153,8 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
             map.put("token",token);
             map.put("page",pageNum);
             map.put("limit",AppConfig.PAGE_SIZE);
-            Api.config(AppConfig.VIDEO_LIST,map).getRequest(new TtitCallback() {
+            map.put("categoryId",mCId);
+            Api.config(AppConfig.VIDEO_LIST_BY_CATEGORY,map).getRequest(new TtitCallback() {
                 @Override
                 public void onSuccess(String res) {
 

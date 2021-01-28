@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.security.identity.AccessControlProfileId;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,18 +17,24 @@ import android.widget.Toast;
 import com.example.buttontest.R;
 import com.example.buttontest.adapter.HomeAdapter;
 import com.example.buttontest.adapter.MyPagerAdapter;
+import com.example.buttontest.api.Api;
+import com.example.buttontest.api.TtitCallback;
+import com.example.buttontest.entity.CategoryEntity;
+import com.example.buttontest.entity.CategoryListResponse;
+import com.example.buttontest.util.AppConfig;
+import com.example.buttontest.util.StringUtil;
 import com.example.buttontest.view.FixedViewPager;
 import com.flyco.tablayout.SlidingTabLayout;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class HomeFragment extends BaseFragment {
     private Context mContext;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
-    private final String[] mTitles = {
-            "热门", "iOS", "Android"
-            , "前端", "后端", "设计", "工具资源"
-    };
+    private String[] mTitles;
     private HomeAdapter mAdapter;
     private SlidingTabLayout tabLayout;
     private FixedViewPager vp;
@@ -67,13 +74,49 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        for (String title : mTitles){
-            mFragments.add(VideoFragment.newInstance(title));
+        requestCategoryList();
+    }
+
+    private void requestCategoryList(){
+        String token = getStringFromSp("token");
+        if (!StringUtil.isEmpty(token)){
+            HashMap<String,Object> map = new HashMap<>();
+            map.put("token",token);
+            Api.config(AppConfig.VIDEO_CATEGORY_LIST,map)
+                    .getRequest(new TtitCallback() {
+                        @Override
+                        public void onSuccess(String res) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CategoryListResponse categoryListResponse = new Gson().fromJson(res,CategoryListResponse.class);
+                                    if (categoryListResponse != null && categoryListResponse.getCode() == 0){
+                                        List<CategoryEntity> list = categoryListResponse.getPage().getList();
+                                        if (list != null && list.size() != 0 ){
+                                            mTitles = new String[list.size()];
+                                            for (int i = 0;i < list.size(); i++){
+                                                mTitles[i] = list.get(i).getCategoryName();
+                                                mFragments.add(VideoFragment.newInstance(list.get(i).getCategoryId()));
+                                            }
+                                            vp.setOffscreenPageLimit(mFragments.size());
+                                            mAdapter = new HomeAdapter(getFragmentManager(),mFragments,mTitles);
+                                            vp.setAdapter(mAdapter);
+                                            tabLayout.setViewPager(vp);
+                                        }
+                                    }
+                                }
+                            });
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    });
         }
-        vp.setOffscreenPageLimit(mFragments.size());
-        mAdapter = new HomeAdapter(getFragmentManager(),mFragments,mTitles);
-        vp.setAdapter(mAdapter);
-        tabLayout.setViewPager(vp);
+
     }
 
 

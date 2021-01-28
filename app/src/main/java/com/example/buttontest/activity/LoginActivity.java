@@ -1,6 +1,7 @@
 package com.example.buttontest.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,6 +79,7 @@ public class LoginActivity extends BaseActivity {
                 LoginResponse loginResponse = gson.fromJson(res, LoginResponse.class);
                 if (loginResponse.getCode() == 0){
                     String token = loginResponse.getToken();
+                    Log.e("token",token);
                     saveBySp("token",token);
                     navigateTo(HomeActivity.class);
                     showToastSync("登录成功");
