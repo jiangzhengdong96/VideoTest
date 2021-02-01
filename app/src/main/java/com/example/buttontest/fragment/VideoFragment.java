@@ -75,11 +75,8 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     protected int mLastPos = mCurPos;
 
     public VideoFragment() {
-        // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static VideoFragment newInstance(int cId) {
         VideoFragment fragment = new VideoFragment();
         fragment.mCId = cId;

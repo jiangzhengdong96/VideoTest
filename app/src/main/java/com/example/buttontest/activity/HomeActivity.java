@@ -14,6 +14,7 @@ import com.example.buttontest.entity.TabEntity;
 import com.example.buttontest.fragment.CollectFragment;
 import com.example.buttontest.fragment.HomeFragment;
 import com.example.buttontest.fragment.MyFragment;
+import com.example.buttontest.fragment.NewsFragment;
 import com.example.buttontest.view.FixedViewPager;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -59,8 +60,9 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initData() {
         mFragments.add(HomeFragment.newInstance());
+        mFragments.add(NewsFragment.newInstance());
         mFragments.add(MyFragment.newInstance());
-        mFragments.add(CollectFragment.newInstance());
+
 
         for (int i = 0; i < mTitles.length; i++){
             mTabEntities.add(new TabEntity(mTitles[i],mIconSelectIds[i],mIconUnselectIds[i]));

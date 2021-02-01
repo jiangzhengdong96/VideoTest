@@ -6,12 +6,11 @@
     tools:context=".fragment.CollectFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <fragment
+        android:id="@+id/ss"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="收藏页面"
-        android:background="#ffffff"
-        android:textColor="#000000"
-        android:textSize="30sp" />
+        android:name="com.example.buttontest.fragment.NewsFragment"
+        />
 
 </FrameLayout>
