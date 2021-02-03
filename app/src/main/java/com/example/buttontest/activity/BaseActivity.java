@@ -42,11 +42,22 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(mContext, c);
         startActivity(intent);
     }
+    public void navigateTo(Class c ,int flags){
+        Intent intent = new Intent(mContext, c);
+        intent.setFlags(flags);
+        startActivity(intent);
+    }
 
     protected void saveBySp(String key,String value){
         SharedPreferences sharedPreferences = getSharedPreferences("sp_ttit", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(key,value);
         editor.commit();
+    }
+
+    protected String getStringFromSp(String key){
+        SharedPreferences sharedPreferences = getSharedPreferences("sp_ttit", MODE_PRIVATE);
+        String value = sharedPreferences.getString(key,"");
+        return value;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.buttontest.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.example.buttontest.util.StringUtil;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
+
+import butterknife.ButterKnife;
 
 public class LoginActivity extends BaseActivity {
 
@@ -81,7 +84,9 @@ public class LoginActivity extends BaseActivity {
                     String token = loginResponse.getToken();
                     Log.e("token",token);
                     saveBySp("token",token);
-                    navigateTo(HomeActivity.class);
+//                    navigateTo(HomeActivity.class);
+                    navigateTo(HomeActivity.class,Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     showToastSync("登录成功");
                 }else {
                     showToastSync("登录失败");

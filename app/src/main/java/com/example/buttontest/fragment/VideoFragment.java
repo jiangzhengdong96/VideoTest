@@ -144,14 +144,11 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     }
 //请求数据
     private void requestVideoList(boolean type){
-        String token = getStringFromSp("token");
-        if (!StringUtil.isEmpty(token)){
             HashMap<String,Object> map = new HashMap<>();
-            map.put("token",token);
             map.put("page",pageNum);
             map.put("limit",AppConfig.PAGE_SIZE);
             map.put("categoryId",mCId);
-            Api.config(AppConfig.VIDEO_LIST_BY_CATEGORY,map).getRequest(new TtitCallback() {
+            Api.config(AppConfig.VIDEO_LIST_BY_CATEGORY,map).getRequest(getActivity(),new TtitCallback() {
                 @Override
                 public void onSuccess(String res) {
 
@@ -195,9 +192,6 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                     }
                 }
             });
-        }else {
-            navigateTo(LoginActivity.class);
-        }
     }
 
 

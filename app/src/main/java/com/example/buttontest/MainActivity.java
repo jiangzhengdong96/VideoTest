@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.buttontest.activity.BaseActivity;
+import com.example.buttontest.activity.HomeActivity;
 import com.example.buttontest.activity.LoginActivity;
 import com.example.buttontest.activity.RegisterActivity;
+import com.example.buttontest.util.StringUtil;
 
 public class MainActivity extends BaseActivity {
     private Button btnLogin, btnRegister;
@@ -19,6 +21,26 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 
+
+    }
+
+    @Override
+    protected int initLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initView() {
+        btnLogin = (Button)findViewById(R.id.btn_login);
+        btnRegister = (Button)findViewById(R.id.btn_register);
+    }
+
+    @Override
+    protected void initData() {
+        if (!StringUtil.isEmpty(getStringFromSp("token"))){
+            navigateTo(HomeActivity.class);
+            finish();
+        }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,21 +58,5 @@ public class MainActivity extends BaseActivity {
 //                startActivity(in);
             }
         });
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_main;
-    }
-
-    @Override
-    protected void initView() {
-        btnLogin = (Button)findViewById(R.id.btn_login);
-        btnRegister = (Button)findViewById(R.id.btn_register);
-    }
-
-    @Override
-    protected void initData() {
-
     }
 }

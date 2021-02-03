@@ -3,7 +3,7 @@ package com.example.buttontest.entity;
 import java.io.Serializable;
 import java.util.List;
 
-public class NewsEntity {
+public class NewsEntity implements Serializable{
     /**
      * newsId : 1
      * newsTitle : 《忍者蛙》发售日公布 已上架Steam、支持简中

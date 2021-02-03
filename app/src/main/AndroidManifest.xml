@@ -12,10 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".activity.HomeActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout">
-
-        </activity>
+        <activity android:name=".activity.WebActivity"></activity>
+        <activity
+            android:name=".activity.HomeActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"></activity>
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

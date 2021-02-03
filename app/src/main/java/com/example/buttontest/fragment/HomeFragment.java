@@ -78,12 +78,10 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void requestCategoryList(){
-        String token = getStringFromSp("token");
-        if (!StringUtil.isEmpty(token)){
+
             HashMap<String,Object> map = new HashMap<>();
-            map.put("token",token);
             Api.config(AppConfig.VIDEO_CATEGORY_LIST,map)
-                    .getRequest(new TtitCallback() {
+                    .getRequest(getActivity(),new TtitCallback() {
                         @Override
                         public void onSuccess(String res) {
                             getActivity().runOnUiThread(new Runnable() {
@@ -120,4 +118,3 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-}

@@ -72,7 +72,7 @@ class BridgeWebViewClient extends WebViewClient {
             super.onPageFinished(view, url);
         }
         mListener.onLoadStart();
-        BridgeUtil.webViewLoadLocalJs(view, BridgeUtil.JAVA_SCRIPT);
+        BridgeUtil.webViewLoadLocalJs(view, BridgeUtil.JAVASCRIPT_STR);
         mListener.onLoadFinished();
     }
 

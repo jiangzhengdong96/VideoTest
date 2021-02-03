@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.example.buttontest.R;
 import com.example.buttontest.activity.LoginActivity;
+import com.example.buttontest.activity.WebActivity;
 import com.example.buttontest.adapter.NewsAdapter;
 import com.example.buttontest.adapter.VideoAdapter;
 import com.example.buttontest.api.Api;
@@ -20,6 +21,7 @@ import com.example.buttontest.entity.NewsEntity;
 import com.example.buttontest.entity.NewsListResponse;
 import com.example.buttontest.entity.VideoEntity;
 import com.example.buttontest.entity.VideoListResponse;
+import com.example.buttontest.listener.OnItemClickListener;
 import com.example.buttontest.util.AppConfig;
 import com.example.buttontest.util.StringUtil;
 import com.google.gson.Gson;
@@ -29,6 +31,7 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +41,7 @@ import java.util.List;
  * Use the {@link NewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsFragment extends BaseFragment {
+public class NewsFragment extends BaseFragment implements OnItemClickListener {
     private RecyclerView recyclerView;
     private RefreshLayout refreshLayout;
     private int pageNum = 1;
@@ -72,6 +75,7 @@ public class NewsFragment extends BaseFragment {
         linearLayout.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayout);
         newsAdapter = new NewsAdapter(getActivity());
+        newsAdapter.setOnItemClickListener(this);
         newsAdapter.setmDatas(allDatas);
         recyclerView.setAdapter(newsAdapter);
 
@@ -98,13 +102,11 @@ public class NewsFragment extends BaseFragment {
 
 
     private void requestNewsList(boolean type){
-        String token = getStringFromSp("token");
-        if (!StringUtil.isEmpty(token)){
+
             HashMap<String,Object> map = new HashMap<>();
-            map.put("token",token);
             map.put("page",pageNum);
             map.put("limit", AppConfig.PAGE_SIZE);
-            Api.config(AppConfig.NEWS_LIST,map).getRequest(new TtitCallback() {
+            Api.config(AppConfig.NEWS_LIST,map).getRequest(getActivity(),new TtitCallback() {
                 @Override
                 public void onSuccess(String res) {
 
@@ -148,8 +150,13 @@ public class NewsFragment extends BaseFragment {
                     }
                 }
             });
-        }else {
-            navigateTo(LoginActivity.class);
-        }
+    }
+
+    @Override
+    public void onItemClick(Serializable s) {
+        NewsEntity newsEntity = (NewsEntity)s;
+        Bundle b = new Bundle();
+        b.putString("uri","http://192.168.31.32:8089/newsDetail?title=" + newsEntity.getAuthorName());
+        navigateTo(WebActivity.class,b);
     }
 }

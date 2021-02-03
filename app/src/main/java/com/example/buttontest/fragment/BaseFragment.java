@@ -17,17 +17,23 @@ import androidx.fragment.app.Fragment;
 import com.dueeeke.videoplayer.player.VideoViewManager;
 import com.example.buttontest.R;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public abstract class BaseFragment extends Fragment {
-    protected View mRootView;
+    public View mRootView;
+    private Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mRootView == null){
             mRootView = inflater.inflate(initLayout(), container, false);
+            initView();
         }
-        initView();
+        unbinder = ButterKnife.bind(this,mRootView);
         return mRootView;
     }
 
@@ -58,6 +64,12 @@ public abstract class BaseFragment extends Fragment {
         startActivity(intent);
     }
 
+    public void navigateTo(Class c, Bundle bundle){
+        Intent intent = new Intent(getActivity(), c);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     protected void saveBySp(String key,String value){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sp_ttit", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -72,5 +84,11 @@ public abstract class BaseFragment extends Fragment {
     }
     protected VideoViewManager getVideoViewManager() {
         return VideoViewManager.instance();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
