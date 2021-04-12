@@ -94,6 +94,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="20dp">
             <ImageView
+                android:id="@+id/iv_collect"
                 android:layout_width="19dp"
                 android:layout_height="19dp"
                 android:background="@drawable/collect_style"/>
@@ -115,6 +116,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="22dp">
             <ImageView
+                android:id="@+id/iv_dianzan"
                 android:layout_width="19dp"
                 android:layout_height="19dp"
                 android:background="@drawable/dianzan_style"/>

@@ -76,6 +76,7 @@ public class Api {
         SharedPreferences sp = context.getSharedPreferences("sp_ttit", MODE_PRIVATE);
         String token = sp.getString("token", "");
         String url = getRequestUrl(AppConfig.BASE_URl + requestUrl,mParams);
+        Log.e("video_app_url:",url + "  token :" + token);
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("token",token)

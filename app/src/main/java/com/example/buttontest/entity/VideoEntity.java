@@ -2,45 +2,42 @@ package com.example.buttontest.entity;
 
 import java.io.Serializable;
 
-public  class VideoEntity implements Serializable {
+/**
+ * @author: wei
+ * @date: 2020-06-27
+ **/
+public class VideoEntity implements Serializable {
     /**
      * vid : 1
      * vtitle : 青龙战甲搭配机动兵，P城上空肆意1V4
      * author : 狙击手麦克
      * coverurl : http://sf3-xgcdn-tos.pstatp.com/img/tos-cn-i-0004/527d013205a74eb0a77202d7a9d5b511~tplv-crop-center:1041:582.jpg
      * headurl : https://sf1-ttcdn-tos.pstatp.com/img/pgc-image/c783a73368fa4666b7842a635c63a8bf~360x360.image
-     * commentNum : 121
-     * likeNum : 123
-     * collectNum : 122
      * playurl : http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4
      * createTime : 2020-07-14 11:21:45
      * updateTime : 2020-07-19 12:05:33
      * categoryId : 1
      * categoryName : 游戏
-     * videoSocialEntity : null
+     * videoSocialEntity : {"commentnum":103,"likenum":121,"collectnum":220}
      */
 
-
-    private Integer vid;
+    private int vid;
     private String vtitle;
     private String author;
     private String coverurl;
     private String headurl;
-    private Integer commentNum;
-    private Integer likeNum;
-    private Integer collectNum;
     private String playurl;
     private String createTime;
     private String updateTime;
-    private Integer categoryId;
+    private int categoryId;
     private String categoryName;
-    private Object videoSocialEntity;
+    private VideoSocialEntity videoSocialEntity;
 
-    public Integer getVid() {
+    public int getVid() {
         return vid;
     }
 
-    public void setVid(Integer vid) {
+    public void setVid(int vid) {
         this.vid = vid;
     }
 
@@ -76,30 +73,6 @@ public  class VideoEntity implements Serializable {
         this.headurl = headurl;
     }
 
-    public Integer getCommentNum() {
-        return commentNum;
-    }
-
-    public void setCommentNum(Integer commentNum) {
-        this.commentNum = commentNum;
-    }
-
-    public Integer getLikeNum() {
-        return likeNum;
-    }
-
-    public void setLikeNum(Integer likeNum) {
-        this.likeNum = likeNum;
-    }
-
-    public Integer getCollectNum() {
-        return collectNum;
-    }
-
-    public void setCollectNum(Integer collectNum) {
-        this.collectNum = collectNum;
-    }
-
     public String getPlayurl() {
         return playurl;
     }
@@ -124,11 +97,11 @@ public  class VideoEntity implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -140,11 +113,65 @@ public  class VideoEntity implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public Object getVideoSocialEntity() {
+    public VideoSocialEntity getVideoSocialEntity() {
         return videoSocialEntity;
     }
 
-    public void setVideoSocialEntity(Object videoSocialEntity) {
+    public void setVideoSocialEntity(VideoSocialEntity videoSocialEntity) {
         this.videoSocialEntity = videoSocialEntity;
+    }
+
+    public static class VideoSocialEntity {
+        /**
+         * commentnum : 103
+         * likenum : 121
+         * collectnum : 220
+         */
+
+        private int commentnum;
+        private int likenum;
+        private int collectnum;
+        private boolean flagLike;
+        private boolean flagCollect;
+
+        public int getCommentnum() {
+            return commentnum;
+        }
+
+        public void setCommentnum(int commentnum) {
+            this.commentnum = commentnum;
+        }
+
+        public int getLikenum() {
+            return likenum;
+        }
+
+        public void setLikenum(int likenum) {
+            this.likenum = likenum;
+        }
+
+        public int getCollectnum() {
+            return collectnum;
+        }
+
+        public void setCollectnum(int collectnum) {
+            this.collectnum = collectnum;
+        }
+
+        public boolean isFlagLike() {
+            return flagLike;
+        }
+
+        public void setFlagLike(boolean flagLike) {
+            this.flagLike = flagLike;
+        }
+
+        public boolean isFlagCollect() {
+            return flagCollect;
+        }
+
+        public void setFlagCollect(boolean flagCollect) {
+            this.flagCollect = flagCollect;
+        }
     }
 }
